@@ -1,39 +1,42 @@
 #include <iostream>
 #include <string>
 using namespace std;
+class scores{
+    float score[3];
+    public:
+    scores(float s[]){
+        for(int i=0;i<3;i++){
+            score[i]=s[i];
+        }
+    }
+    scores(const scores& s){
+        for(int i=0;i<3;i++){
+            score[i]=s.score[i];
+        }
+    }
+    void display(){
+        for(int i=0;i<3;i++){
+            cout<<"score "<<i+1<<": "<<score[i]<<endl;
+        }
+    }
+};
 class Student{
   string ID;
-  float* score;
-  
+  scores score;
   string name;
   
   public:
-  Student(string i,string n,float s1[]){
-      ID=i;
-      name=n;
-      score=new float[3];
-      for(int i=0;i<3;i++){
-          score[i]=s1[i];
-      }
-  }
-  Student(const Student &S1){
-      ID = S1.ID;
-      name = S1.name;
-      score=new float[3];
-      for(int i=0;i<3;i++){
-          score[i]=S1.score[i];
-      }
-  }
+  Student(string i, string n, float s1[]) : ID(i), name(n), score(s1) {}
+
+  Student(const Student &S1) : ID(S1.ID), name(S1.name), score(S1.score) {}
+
   void display(){
       cout<<"ID "<<ID<<endl;
       cout<<"Student's Name "<<name<<endl;
-      for(int i=0;i<3;i++){
-         cout<<"score "<<i+1<<": "<<score[i]<<endl; 
+      score.display();
       }
-  }
-  ~Student(){
-           delete[] score;
-  }
+  
+  
 };
 int main() {
     float scores[]={76.08,78.92,37.13};
