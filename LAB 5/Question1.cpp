@@ -1,26 +1,34 @@
 #include <iostream>
 #include <string>
 using namespace std;
+class Owner{
+    public:
+    string name;
+    Owner(string n):name(n){}
+    void display(){
+        cout<<"Owner's Name: "<<name<<endl;
+    }
+};
 class Apartment{
   string ID;
   string address;
-  string* name;
+  Owner* owner ;
   
   public:
   Apartment(string i,string a,string n){
       ID=i;
       address=a;
-      name=new string(n);
+      owner=new Owner(n);
   }
   Apartment(Apartment &A1){
-      this->ID=A1.ID;
-      this->address=A1.address;
-      name=A1.name;
+      ID=A1.ID;
+      address=A1.address;
+      owner=A1.owner;
   }
   void display(){
       cout<<"ID "<<ID<<endl;
-      cout<<"Ownner's Name "<<*name<<endl;
       cout<<"Address "<<address<<endl;
+      owner->display();
   }
   ~Apartment(){
       
@@ -33,4 +41,4 @@ int main() {
     cout<<endl;
     A2.display();
     return 0;
-}
+} 
