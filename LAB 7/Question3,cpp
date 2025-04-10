@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Ticket{
+    protected:
+    double ticketID,price;
+    string passangerName,destination,date;
+    public:
+    Ticket(double id,double p,string n,string d,string t):ticketID(id),price(p),passangerName(n),destination(d),date(t){}
+    virtual void reserve(){
+        cout<<"TICKET WITH ID "<<ticketID<<" ,WITH PRICE "<<price<<" ON "<<date<<" FOR "<<destination<<" RESERVED BY "<<passangerName<<endl;
+    }
+    virtual void cancel(){
+        cout<<"Ticket With ID "<<ticketID<<" has been cancelled\n";
+    }
+    virtual void displayTicketInfo(){
+        cout<<"============================\n";
+        cout<<"Passanger Name: "<<passangerName<<endl;
+        cout<<"Ticket ID: "<<ticketID<<endl;
+        cout<<"Price: "<<price<<endl;
+        cout<<"Date: "<<date<<endl;
+        cout<<"Destination: "<<destination<<endl;
+    }
+    ~Ticket(){}
+};
+class FlightTicket:public Ticket{
+    string airlineName,seatClass,flightNumber;
+    public:
+    FlightTicket(double id,double p,string n,string d,string t,string a,string s,string f):Ticket(id,p,n,d,t),airlineName(a),seatClass(s),flightNumber(f){}
+     void displayTicketInfo(){
+         cout<<"Displaying Information Of Flight Ticket's Info\n";
+         Ticket::displayTicketInfo();
+         
+         cout<<"Airline Name: "<<airlineName<<endl;
+         cout<<"seat Class: "<<seatClass<<endl;
+         cout<<"Flight Number: "<<flightNumber<<endl;
+     }
+     ~ FlightTicket(){}
+};
+class TrainTicket:public Ticket{
+    string trainNumber,coachType,departureTime;
+    public:
+    TrainTicket(double id,double p,string n,string d,string t,string tn,string c,string dt):Ticket(id,p,n,d,t),trainNumber(tn),coachType(c),departureTime(dt){}
+    void displayTicketInfo(){
+         cout<<"Displaying Information Of Train Ticket's Info\n";
+         Ticket::displayTicketInfo();
+         
+         cout<<"Train Number: "<<trainNumber<<endl;
+         cout<<"Coach Type: "<<coachType<<endl;
+         cout<<"Departure Time: "<<departureTime<<endl;
+     }
+     ~TrainTicket(){}
+};
+class concertTicket:public Ticket{
+    string artistName,venue,seatType;
+    public:
+    concertTicket(double id,double p,string n,string d,string t,string a,string v,string s):Ticket(id,p,n,d,t),artistName(a),venue(v),seatType(s){}
+     void displayTicketInfo(){
+         cout<<"Displaying Information Of Concert Ticket's Info\n";
+         Ticket::displayTicketInfo();
+         
+         cout<<"Artist Name: "<<artistName<<endl;
+         cout<<"Venue: "<<venue<<endl;
+         cout<<"seat Type: "<<seatType<<endl;
+     }
+     ~concertTicket(){}
+};
+int main(){
+    
+    Ticket* t1 = new FlightTicket(101, 25000, "Fabiha", "Dubai", "2025-05-15", "Emirates", "Business", "EK786");
+    Ticket* t2 = new TrainTicket(102, 1500, "Ali", "Lahore", "2025-06-10", "PKR123", "Economy", "08:30 AM");
+    Ticket* t3 = new concertTicket(103, 5000, "Sara", "Karachi", "2025-07-20", "Atif Aslam", "Expo Center", "VIP");
+
+    t1->reserve();
+    t1->displayTicketInfo();
+    t1->cancel();
+
+    cout << endl;
+
+    t2->reserve();
+    t2->displayTicketInfo();
+    t2->cancel();
+
+    cout << endl;
+
+    t3->reserve();
+    t3->displayTicketInfo();
+    t3->cancel();
+
+    delete t1;
+    delete t2;
+    delete t3;
+
+    return 0;
+
+
+}
