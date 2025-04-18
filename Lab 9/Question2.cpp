@@ -59,4 +59,6 @@ int main(){
     apetizer->prepare();
     mainmenu->showDetails();
     mainmenu->prepare();
+    delete apetizer;
+    delete mainmenu;
 }
