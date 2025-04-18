@@ -54,4 +54,6 @@ int main(){
     cout<<"Total Bill Of InPatient "<<ip->calculateCost()<<endl;
     op->displayTreatment();
     cout<<"Total Bill Of OutPatient "<<op->calculateCost();
+    delete ip;
+    delete op;
 }
