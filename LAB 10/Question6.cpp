@@ -1,65 +1,61 @@
-#include <iostream>
+#include<iostream>
 #include <fstream>
 #include <cstring>
 using namespace std;
-
-class InventoryItem {
-private:
-    int itemID;
-    char itemName[20];
-
-public:
-    InventoryItem() {
-        itemID = 0;
-        strcpy(itemName, "");
+class InvetarySystem{
+    int id;
+    char name[20];
+    public:
+    InvetarySystem(){
+        id=0;
+        strcpy(name,"");
     }
-
-    InventoryItem(int id, const char* name) {
-        itemID = id;
-        strncpy(itemName, name, sizeof(itemName) - 1);
-        itemName[sizeof(itemName) - 1] = '\0'; // ensure null termination
+    InvetarySystem(int i,char* n){
+        id=i;
+        strncpy(name,n,sizeof(name)-1);
+        name[sizeof(name)-1]='\0';    
     }
+    void writeData(string fileName){
+        ofstream ofile;
 
-    void writeData(const char* fileName) {
-        ofstream file(fileName, ios::binary | ios::app);
-        if (!file) {
-            cerr << "Cannot open the file for writing.\n";
+        ofile.open(fileName,ios::binary);
+        if(!ofile.is_open()){
+            cerr<<"can't open the file\n";
+            return ;
+        }
+        ofile.write((char*)this, sizeof(*this));
+        ofile.close();
+
+    }
+    void readData(string fileName){
+        ifstream ifile;
+        ifile.open(fileName, ios::binary);
+        if(!ifile.is_open()){
+            cerr<<"NO such File Found\n";
             return;
         }
-        file.write((char*)this, sizeof(InventoryItem));
-        file.close();
-        cout << "Data written successfully.\n";
+        ifile.read((char*)this,sizeof(*this));
+        ifile.close();
     }
-
-    void readData(const char* fileName) {
-        ifstream file(fileName, ios::binary);
-        if (!file) {
-            cerr << "Cannot open the file for reading.\n";
-            return;
-        }
-
-        InventoryItem temp;
-        while (file.read((char*)&temp, sizeof(InventoryItem))) {
-            cout << "ID: " << temp.itemID << "\n";
-            cout << "Name: " << temp.itemName << "\n";
-        }
-
-        file.close();
-        cout << "Data read successfully.\n";
+    void display(){
+        cout<<"ID: "<<id<<endl;
+        cout<<"Name: "<<name<<endl;
     }
 };
-
-
 int main() {
-    InventoryItem item1(101, "Wrench");
-    const char* fileName = "inventory.dat";
+    
+    InvetarySystem item1(101, (char*)"Monitor");
+    cout << "Writing Data to File..." << endl;
+    item1.writeData("inventory.dat");
 
- 
-    item1.writeData(fileName);
+    
+    InvetarySystem item2;
+    cout << "Reading Data from File..." << endl;
+    item2.readData("inventory.dat");
 
-
-    InventoryItem reader;
-    reader.readData(fileName);
+   
+    cout << "Displaying Read Data:" << endl;
+    item2.display();
 
     return 0;
-}
+} 
