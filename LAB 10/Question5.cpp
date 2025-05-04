@@ -26,7 +26,7 @@ int main() {
         getline(iss, extraData, ',');
         getline(iss, certification);
 
-        // Trim spaces
+        
         type.erase(remove(type.begin(), type.end(), ' '), type.end());
         id.erase(remove(id.begin(), id.end(), ' '), id.end());
         name.erase(remove(name.begin(), name.end(), ' '), name.end());
