@@ -1,20 +1,29 @@
 #include <iostream>
 #include <exception>
-#include <cstring>
+#include <string>
+using namespace std;
 
-class DatabaseException : public std::exception {
-private:
-    const char* msg;
+class DatabaseException : public exception {
+protected:
+    string message;
+
 public:
-    DatabaseException() : msg("data base error.") {}
+    DatabaseException(string msg) : message(msg) {}
+
     const char* what() const noexcept override {
-        return msg;
+        return message.c_str();
     }
 };
 
-class ConnectionFailedException : public DatabaseException {};
+class ConnectionFailedException : public DatabaseException {
+public:
+    ConnectionFailedException(string msg) : DatabaseException(msg) {}
+};
 
-class QueryTimeoutException : public DatabaseException {};
+class QueryTimeoutException : public DatabaseException {
+public:
+    QueryTimeoutException(string msg) : DatabaseException(msg) {}
+};
 
 template <typename T>
 class DatabaseConnector {
@@ -26,32 +35,32 @@ public:
 
     void connect() {
         if (db_name == "invalid_db") {
-            throw ConnectionFailedException();
+            throw ConnectionFailedException("Connection failed: Invalid database name.");
         } else if (db_name == "slow_db") {
-            throw QueryTimeoutException();
+            throw QueryTimeoutException("Query timeout: Database response too slow.");
         } else {
-            std::cout << "Connected to " << db_name << " successfully.\n";
+            cout << "Connected to " << db_name << " successfully." << endl;
         }
     }
 };
 
 int main() {
     try {
-        std::cout << "Attempting to connect to invalid_db...\n";
-        DatabaseConnector<std::string> conn1("invalid_db");
+        cout << "Attempting to connect to invalid_db..." << endl;
+        DatabaseConnector<string> conn1("invalid_db");
         conn1.connect();
     }
-    catch (const ConnectionFailedException& e) {
-        std::cout << "Caught ConnectionFailedException what(): " << e.what() << std::endl;
+    catch (DatabaseException& e) {
+        cout << "Caught Exception: " << e.what() << endl;
     }
 
     try {
-        std::cout << "Attempting to connect to slow_db...\n";
-        DatabaseConnector<std::string> conn2("slow_db");
+        cout << "Attempting to connect to slow_db..." << endl;
+        DatabaseConnector<string> conn2("slow_db");
         conn2.connect();
     }
-    catch (const DatabaseException& e) {
-        std::cout << "Caught a general DatabaseException what(): " << e.what() << std::endl;
+    catch (DatabaseException& e) {
+        cout << "Caught Exception: " << e.what() << endl;
     }
 
     return 0;
