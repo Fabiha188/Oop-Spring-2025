@@ -1,7 +1,12 @@
 #include <iostream>
 #include <exception>
 
-class InvalidTemperatureException : public std::exception {};
+class InvalidTemperatureException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Temperature below absolute zero is not valid.";
+    }
+};
 
 template <typename T>
 T convertToFahrenheit(T celsius) {
@@ -19,7 +24,7 @@ int main() {
         std::cout << "Fahrenheit: " << fahrenheit << "\n";
     }
     catch (const InvalidTemperatureException& e) {
-        std::cout << "Invalid TemperatureException: " << e.what() << std::endl;
+        std::cout << "Caught InvalidTemperatureException: " << e.what() << std::endl;
     }
 
     return 0;
