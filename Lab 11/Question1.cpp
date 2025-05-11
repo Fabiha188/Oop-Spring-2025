@@ -88,7 +88,7 @@ int main() {
         C.display();
     }
     catch (const DimensionMismatchException& ex) {
-        std::cout << ex.what() << std::endl;
+        std::cout << "Caught DimensionMismatchException: " << ex.what() << std::endl;
     }
 
     return 0;
