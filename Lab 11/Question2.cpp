@@ -1,8 +1,19 @@
 #include <iostream>
 #include <exception>
 
-class QueueOverflowException : public std::exception {};
-class QueueUnderflowException : public std::exception {};
+class QueueOverflowException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Queue overflow occurred: Cannot enqueue to a full queue.";
+    }
+};
+
+class QueueUnderflowException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Queue underflow occurred: Cannot dequeue from an empty queue.";
+    }
+};
 
 template <typename T>
 class Queue {
@@ -52,23 +63,23 @@ int main() {
     Queue<int> q(3);
 
     try {
-        std::cout << "for enqueue to a full queue...\n";
+        std::cout << "Attempting to enqueue to a full queue...\n";
         q.enqueue(10);
         q.enqueue(20);
         q.enqueue(30);
         q.enqueue(40);  
     }
     catch (const QueueOverflowException& e) {
-        std::cout << "Que Overflow: " << e.what() << std::endl;
+        std::cout << "Caught QueueOverflowException: " << e.what() << std::endl;
     }
 
     try {
         Queue<int> emptyQ(2);
-        std::cout << " from an empty queue...\n";
+        std::cout << "Attempting to dequeue from an empty queue...\n";
         emptyQ.dequeue();  
     }
     catch (const QueueUnderflowException& e) {
-        std::cout << "QueueUnderflowException : " << e.what() << std::endl;
+        std::cout << "Caught QueueUnderflowException: " << e.what() << std::endl;
     }
 
     return 0;
